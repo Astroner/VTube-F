@@ -8,6 +8,8 @@ import cn from "./Player.module.scss";
 
 export interface IPlayer {
     code: string;
+    autoPlay?: boolean
+    onEnded?: VoidFunction
 }
 
 const Player: FC<IPlayer> = props => {
@@ -46,7 +48,7 @@ const Player: FC<IPlayer> = props => {
                     <img src={info.displayImage} alt="" />
                 </>
             )}
-            {itag && <audio src={`${env.API_URL}player/${props.code}/?itag=${itag}`} controls />}
+            {itag && <audio autoPlay={props.autoPlay} src={`${env.API_URL}player/${props.code}/?itag=${itag}`} onEnded={props.onEnded} controls />}
         </div>
     )
 }
