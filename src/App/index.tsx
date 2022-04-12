@@ -1,4 +1,5 @@
 import React, { memo, FC, ReactNode, useState } from 'react';
+import { parseUrl } from '../helpers/functions/parseUrl';
 import Player from '../Player';
 
 import cn from "./App.module.scss";
@@ -17,7 +18,7 @@ const App: FC<IApp> = props => {
         <div className={cn.root}>
             <div>
                 <input value={input} onChange={e => setInput(e.target.value)} />
-                <button style={{ marginLeft: 20 }} onClick={() => setVideo(input)}>
+                <button style={{ marginLeft: 20 }} onClick={() => setVideo(parseUrl(input))}>
                     Load
                 </button>
             </div>
