@@ -1126,6 +1126,11 @@
   dependencies:
     postcss-value-parser "^4.2.0"
 
+"@dogonis/hooks@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@dogonis/hooks/-/hooks-1.1.0.tgz#ddbd937c3c3a3058f333d5aef87d21499eb70e31"
+  integrity sha512-Q1zZvK7ZJ5Th7YhkQRfG1UCJ6s56jmS8V3BwRaqehslqsPfRQijPD2MM+us49DbT4Kgz60ohcPbZckkrXT6Q5w==
+
 "@eslint/eslintrc@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.2.1.tgz#8b5e1c49f4077235516bc9ec7d41378c0f69b8c6"

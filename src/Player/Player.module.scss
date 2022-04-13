@@ -5,3 +5,10 @@
         width: 100%;
     }
 }
+
+.rect {
+    width: calc(100vw - 40px);
+    height: calc((100vw - 40px) * 9 / 16);
+
+    border: 1px dashed black;
+}
