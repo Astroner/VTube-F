@@ -1,4 +1,4 @@
-import React, { memo, FC, useEffect, useState } from 'react';
+import React, { memo, FC } from 'react';
 import { env } from '../env';
 
 import { QueueItem } from '../Types';
