@@ -6,13 +6,22 @@ import { getPlaylist } from '../../../api/main/getPlaylist';
 import { ParsedURL, parseUrl } from '../../utils/parseUrl';
 
 import cn from "./VideoInput.module.scss";
-import PlayIcon from './Play.icon';
+import PlayIcon from '../../../icons/Play.icon';
 import { Playlist } from '../../../Responses';
+import ShuffleIcon from '../../../icons/Shuffle.icon';
+import { shuffleArray } from '../../../helpers/functions/shuffleArray';
+import PlaylistAddIcon from '../../../icons/PlaylistAdd.icon';
 
+export interface Video {
+    code: string, 
+    title: string, 
+    displayImage: string
+}
 export interface IVideoInput {
     margin?: string | number;
-    onVideoPlay?: (video: { code: string, title: string, displayImage: string }) => void
+    onVideoPlay?: (video: Video) => void
     onPlaylistPlay?: (playlist: Playlist) => void
+    onPlaylistAdd?: (video: Video) => void
 }
 
 const VideoInput: FC<IVideoInput> = props => {
@@ -46,6 +55,30 @@ const VideoInput: FC<IVideoInput> = props => {
         setTarget(null)
     }
 
+    const shuffle = () => {
+        if(!data || !target || !("list" in data)) return;
+
+        props.onPlaylistPlay && props.onPlaylistPlay({
+            ...data,
+            list: shuffleArray(data.list)
+        })
+
+        setValue("")
+        setTarget(null)
+    }
+
+    const add = () => {
+        if(!data || !target || ("list" in data)) return;
+
+        props.onPlaylistAdd && props.onPlaylistAdd({
+            code: target.code,
+            ...data,
+        })
+
+        setValue("")
+        setTarget(null)
+    }
+
     return (
         <div className={cn.root}>
             <form style={{ margin: props.margin }} className={cn.form} onSubmit={submit}>
@@ -71,7 +104,22 @@ const VideoInput: FC<IVideoInput> = props => {
                                 </h2>
                             </div>
                             <div className={cn.actions}>
-                                <PlayIcon onClick={play} />
+                                <button className={cn.action} onClick={play}>
+                                    <PlayIcon />
+                                </button>
+                                {
+                                    "list" in data 
+                                    ? (
+                                        <button className={cn.action} onClick={shuffle}>
+                                            <ShuffleIcon />
+                                        </button>
+                                    )
+                                    : (
+                                        <button className={cn.action} onClick={add}>
+                                            <PlaylistAddIcon />
+                                        </button>
+                                    )
+                                }
                             </div>
                         </div>
                     )}

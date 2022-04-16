@@ -169,6 +169,25 @@ $line-height: 35px;
 
 .actions {
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-    justify-content: space-around;
+.action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 35px;
+    height: 35px;
+
+    background-color: #fff;
+
+    border: 1px solid black;
+
+    border-radius: 50%;
+
+    &:not(:last-child) {
+        margin-right: 20px;
+    }
 }
