@@ -7,7 +7,7 @@ import { ParsedURL, parseUrl } from '../../utils/parseUrl';
 
 import cn from "./VideoInput.module.scss";
 import PlayIcon from '../../../icons/Play.icon';
-import { Playlist } from '../../../Responses';
+import { Playlist, YTImage } from '../../../Responses';
 import ShuffleIcon from '../../../icons/Shuffle.icon';
 import { shuffleArray } from '../../../helpers/functions/shuffleArray';
 import PlaylistAddIcon from '../../../icons/PlaylistAdd.icon';
@@ -15,7 +15,7 @@ import PlaylistAddIcon from '../../../icons/PlaylistAdd.icon';
 export interface Video {
     code: string, 
     title: string, 
-    displayImage: string
+    displayImage: YTImage[]
 }
 export interface IVideoInput {
     margin?: string | number;

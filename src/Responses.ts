@@ -23,5 +23,5 @@ export interface VideoFormat {
 
 export interface VideoInfo {
     title: string;
-    displayImage: string;
+    displayImage: YTImage[];
 }

@@ -36,11 +36,7 @@ const App: FC<IApp> = props => {
         setCursor(0)
         setQueue([{
             code: video.code,
-            display: [{
-                url: video.displayImage,
-                height: NaN,
-                width: NaN
-            }],
+            display: video.displayImage,
             title: video.title
         }])
     }, [])
@@ -48,11 +44,7 @@ const App: FC<IApp> = props => {
     const add = useCallback((video: Video) => {
         setQueue(prev => prev.concat({
             code: video.code,
-            display: [{
-                url: video.displayImage,
-                height: NaN,
-                width: NaN
-            }],
+            display: video.displayImage,
             title: video.title
         }))
     }, [])
