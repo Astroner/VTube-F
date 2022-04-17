@@ -1,5 +1,6 @@
 import React, { memo, FC, FormEventHandler, useState } from 'react';
 import { usePromiseCall } from '@dogonis/hooks';
+import { useService } from '@dogonis/react-injectable';
 
 import { getMediaInfo } from '../../../api/main/getMediaInfo';
 import { getPlaylist } from '../../../api/main/getPlaylist';
@@ -12,6 +13,9 @@ import ShuffleIcon from '../../../icons/Shuffle.icon';
 import { shuffleArray } from '../../../helpers/functions/shuffleArray';
 import PlaylistAddIcon from '../../../icons/PlaylistAdd.icon';
 import { getMidImage } from '../../../helpers/functions/getMidImage';
+import { CloseIcon } from '../../../icons/Close.icon';
+import { BookmarkAddIcon } from '../../../icons/BookmarkAdd.icon';
+import { PlaylistsService } from '../../../services/playlists.service';
 
 export interface Video {
     code: string, 
@@ -29,6 +33,7 @@ const VideoInput: FC<IVideoInput> = props => {
 
     const [value, setValue] = useState("");
     const [target, setTarget] = useState<null | ParsedURL>(null);
+    const playlists = useService(PlaylistsService);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
@@ -37,7 +42,8 @@ const VideoInput: FC<IVideoInput> = props => {
     }
 
     const [isLoading, data] = usePromiseCall(async (target) => {
-        if(!target) return null;
+        if(!target?.code) return null;
+
         if(target.type === "VIDEO") return await getMediaInfo(target.code)
         return await getPlaylist(target.code);
     }, [target])
@@ -76,6 +82,21 @@ const VideoInput: FC<IVideoInput> = props => {
             ...data,
         })
 
+        setValue("")
+        setTarget(null)
+    }
+
+    const addToBookmark = () => {
+        if(!data || !target || !("list" in data)) return;
+
+        playlists.add({
+            code: target.code,
+            display: data.display,
+            title: data.title
+        })
+    }
+
+    const reset = () => {
         setValue("")
         setTarget(null)
     }
@@ -123,6 +144,16 @@ const VideoInput: FC<IVideoInput> = props => {
                                         </button>
                                     )
                                 }
+                                {
+                                    "list" in data && target && !playlists.has(target.code) && (
+                                        <button className={cn.action} onClick={addToBookmark}>
+                                            <BookmarkAddIcon />
+                                        </button>
+                                    )
+                                }
+                                <button className={cn.action} onClick={reset}>
+                                    <CloseIcon />
+                                </button>
                             </div>
                         </div>
                     )}

@@ -5,10 +5,14 @@ import "normalize.css";
 import "./index.scss"
 
 import App from './App';
+import { InjectableProvider } from '@dogonis/react-injectable';
+import { PlaylistsService } from './services/playlists.service';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <InjectableProvider inject={[PlaylistsService]}>
+      <App />
+    </InjectableProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

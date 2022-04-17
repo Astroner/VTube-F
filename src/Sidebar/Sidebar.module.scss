@@ -5,4 +5,65 @@
     height: 100%;
     
     padding: 20px;
+    
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.list {
+    margin-top: 20px;
+
+    border: 1px dashed black;
+
+    padding: 5px;
+
+    flex-grow: 1;
+}
+
+.item {
+    height: 60px;
+
+    border: 1px solid black;
+
+    background-size: cover;
+    background-position: center center;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+
+    background: rgba($color: #fff, $alpha: .5);
+
+    display: flex;
+    align-items: center;
+
+    padding: 5px;
+}
+
+.text {
+    flex-grow: 1;
+
+    font-size: 20px;
+}
+
+.button {
+    background-color: transparent;
+    
+    border: none;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
 }

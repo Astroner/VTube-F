@@ -64,7 +64,7 @@ const App: FC<IApp> = props => {
             <VideoInput margin="20px 0 0" onPlaylistPlay={playPlaylist} onVideoPlay={playVideo} onPlaylistAdd={add} />
             <Queue margin="20px 0 0" cursor={cursor} items={queue} onItemSelect={setCursor} />
             <div className={sidebarState ? cn['sidebar--opened'] : cn['sidebar--closed']}>
-                <Sidebar />
+                <Sidebar onPlay={playPlaylist} />
             </div>
         </div>
     )
