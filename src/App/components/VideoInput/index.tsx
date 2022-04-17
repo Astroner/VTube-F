@@ -11,6 +11,7 @@ import { Playlist, YTImage } from '../../../Responses';
 import ShuffleIcon from '../../../icons/Shuffle.icon';
 import { shuffleArray } from '../../../helpers/functions/shuffleArray';
 import PlaylistAddIcon from '../../../icons/PlaylistAdd.icon';
+import { getMidImage } from '../../../helpers/functions/getMidImage';
 
 export interface Video {
     code: string, 
@@ -96,7 +97,9 @@ const VideoInput: FC<IVideoInput> = props => {
                         <div className={cn.data}>
                             <div className={cn.info}>
                                 <div 
-                                    style={{ backgroundImage: `url(${"list" in data ? data.display[Math.floor(data.display.length / 2)].url : data.displayImage})` }} 
+                                    style={{ 
+                                        backgroundImage: `url(${getMidImage("list" in data ? data.display : data.displayImage).url})` 
+                                    }} 
                                     className={cn.display} 
                                 />
                                 <h2 className={cn.title}>
