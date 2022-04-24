@@ -9,9 +9,13 @@ import PlayIcon from '../icons/Play.icon';
 
 import { QueueItem } from '../Types';
 
-import cn from "./Player.module.scss";
+import { Observable } from '../helpers/classes/Observable';
 import ForwardIcon from '../icons/Forward.icon';
 import BackwardIcon from '../icons/Backward.icon';
+import { createDoubleTapHandler } from './utils/createDoubleTapHandler';
+import ProgressBar from './components/ProgressBar';
+
+import cn from "./Player.module.scss";
 
 export interface IPlayer {
     video: QueueItem | null;
@@ -27,8 +31,9 @@ export interface IPlayer {
 const Player: FC<IPlayer> = props => {
 
     const [itag, setItag] = useState<number | null>(null)
-    const [isPlaying, , , toggle] = useBooleanState(true);
-
+    const [isPlaying, play, pause, toggle] = useBooleanState(true);
+    
+    const progress = useMemo(() => new Observable(0), [])
     const audio = useRef<HTMLAudioElement>(null)
 
     const src = useMemo(() => {
@@ -40,6 +45,14 @@ const Player: FC<IPlayer> = props => {
 
         return url.toString();
     }, [itag, props.video])
+
+    const forward = useMemo(() => createDoubleTapHandler(() => {
+        if(audio.current) audio.current.currentTime += 10;
+    }), [])
+
+    const backward = useMemo(() => createDoubleTapHandler(() => {
+        if(audio.current) audio.current.currentTime -= 10;
+    }), [])
 
     useEffect(() => {
         if(!props.video) return;
@@ -68,7 +81,9 @@ const Player: FC<IPlayer> = props => {
     return (
         <div style={{ margin: props.margin }} className={cn.root} >
             {props.video && (
-                <div className={cn.media} style={{ backgroundImage: `url(${getMidImage(props.video.display).url})` }} >
+                <div className={cn.media} style={{ backgroundImage: `url(${getMidImage(props.video.display).url})` }}>
+                    <div className={cn.half} onTouchEnd={backward} />
+                    <div className={cn.half} onTouchEnd={forward}/>
                     <div className={cn.buttons}>
                         <button className={cn['button']} onClick={props.onPrev}>
                             <BackwardIcon />
@@ -80,11 +95,21 @@ const Player: FC<IPlayer> = props => {
                             <ForwardIcon />
                         </button>
                     </div>
+                    <div className={cn.progress}>
+                        <ProgressBar progress={progress} />
+                    </div>
                 </div>
             )}
             {
                 src && (
-                    <audio ref={audio} src={src} onEnded={props.onEnded} />
+                    <audio 
+                        ref={audio} 
+                        src={src} 
+                        onEnded={props.onEnded} 
+                        onPause={pause} 
+                        onPlay={play} 
+                        onTimeUpdate={(e) => progress.update(e.currentTarget.currentTime / e.currentTarget.duration)} 
+                    />
                 )
             }
         </div>

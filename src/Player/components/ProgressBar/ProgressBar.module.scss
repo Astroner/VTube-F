@@ -1,0 +1,21 @@
+.root {
+    width: 100%;
+
+    border-top: 2px solid black;
+
+    position: relative;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+    border: 2px solid black;
+
+    background-color: #fff;
+
+    position: absolute;
+
+    top: -6px;
+}
