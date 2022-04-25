@@ -78,6 +78,10 @@ const Player: FC<IPlayer> = props => {
             : audio.current.pause()
     }, [isPlaying, src])
 
+    useEffect(() => {
+        if(audio.current) audio.current.currentTime = 0
+    }, [src])
+
     return (
         <div style={{ margin: props.margin }} className={cn.root} >
             {props.video && (
