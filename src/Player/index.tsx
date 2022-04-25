@@ -72,15 +72,11 @@ const Player: FC<IPlayer> = props => {
     }, [props.video])
 
     useEffect(() => {
-        if(!audio.current || !src) return;
+        if(!audio.current) return;
         isPlaying 
             ? audio.current.play()
             : audio.current.pause()
-    }, [isPlaying, src])
-
-    useEffect(() => {
-        if(audio.current) audio.current.currentTime = 0
-    }, [src])
+    }, [isPlaying])
 
     return (
         <div style={{ margin: props.margin }} className={cn.root} >
@@ -113,6 +109,7 @@ const Player: FC<IPlayer> = props => {
                         onPause={pause} 
                         onPlay={play} 
                         onTimeUpdate={(e) => progress.update(e.currentTarget.currentTime / e.currentTarget.duration)} 
+                        autoPlay
                     />
                 )
             }
