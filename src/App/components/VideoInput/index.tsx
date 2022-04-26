@@ -16,6 +16,7 @@ import { getMidImage } from '../../../helpers/functions/getMidImage';
 import { CloseIcon } from '../../../icons/Close.icon';
 import { BookmarkAddIcon } from '../../../icons/BookmarkAdd.icon';
 import { PlaylistsService } from '../../../services/playlists.service';
+import { getDynamicList } from '../../../api/main/getDynamicList';
 
 export interface Video {
     code: string, 
@@ -45,6 +46,7 @@ const VideoInput: FC<IVideoInput> = props => {
         if(!target?.code) return null;
 
         if(target.type === "VIDEO") return await getMediaInfo(target.code)
+        else if(target.type === "DYNAMIC_PLAYLIST") return await getDynamicList("", target.code)
         return await getPlaylist(target.code);
     }, [target])
 

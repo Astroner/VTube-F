@@ -73,6 +73,11 @@ const Player: FC<IPlayer> = props => {
 
     useEffect(() => {
         if(!audio.current) return;
+        audio.current.currentTime = 0;
+    }, [src])
+
+    useEffect(() => {
+        if(!audio.current) return;
         isPlaying 
             ? audio.current.play()
             : audio.current.pause()

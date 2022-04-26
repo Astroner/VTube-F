@@ -1,5 +1,5 @@
 export interface ParsedURL {
-    type: "PLAYLIST" | "VIDEO",
+    type: "PLAYLIST" | "VIDEO" | "DYNAMIC_PLAYLIST",
     code: string
 }
 
@@ -7,6 +7,12 @@ export const parseUrl = (strURL: string): ParsedURL => {
     try {
         const url = new URL(strURL);
         if (url.pathname === "/watch") {
+            if(url.searchParams.has("list")) {
+                return {
+                    type: "DYNAMIC_PLAYLIST",
+                    code: url.searchParams.get("list")!
+                }
+            }
             return {
                 type: "VIDEO",
                 code: url.searchParams.get("v") ?? ""
