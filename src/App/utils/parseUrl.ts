@@ -10,7 +10,7 @@ export const parseUrl = (strURL: string): ParsedURL => {
             if(url.searchParams.has("list")) {
                 return {
                     type: "DYNAMIC_PLAYLIST",
-                    code: url.searchParams.get("list")!
+                    code: `${url.searchParams.get("list")!} | ${url.searchParams.get("v")!}`
                 }
             }
             return {

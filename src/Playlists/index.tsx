@@ -1,8 +1,9 @@
 import { useAsyncCallback } from '@dogonis/hooks';
 import { useInjector } from '@dogonis/react-injectable';
 import React, { memo, FC } from 'react';
+
 import { getPlaylist } from '../api/main/getPlaylist';
-import Logo from '../components/Logo';
+import Sidebar from '../components/Sidebar';
 import { getMidImage } from '../helpers/functions/getMidImage';
 import { shuffleArray } from '../helpers/functions/shuffleArray';
 import { CloseIcon } from '../icons/Close.icon';
@@ -11,13 +12,13 @@ import ShuffleIcon from '../icons/Shuffle.icon';
 import { Playlist as ProtoPlaylist } from '../Responses';
 import { Playlist, PlaylistsService } from '../services/playlists.service';
 
-import cn from "./Sidebar.module.scss";
+import cn from "./Playlists.module.scss";
 
-export interface ISidebar {
+export interface IPlaylists {
     onPlay?: (item: ProtoPlaylist) => void;
 }
 
-const Sidebar: FC<ISidebar> = props => {
+const Playlists: FC<IPlaylists> = props => {
 
     const [{ playlists }, service] = useInjector(PlaylistsService);
 
@@ -38,30 +39,27 @@ const Sidebar: FC<ISidebar> = props => {
     )
 
     return (
-        <div className={cn.root}>
-            <Logo />
-            <div className={cn.list}>
-                {playlists.map(item => (
-                    <div key={item.code} className={cn.item} style={{ backgroundImage: `url(${getMidImage(item.display).url})` }}>
-                        <div className={cn.content}>
-                            <div className={cn.text}>
-                                {item.title}
-                            </div>
-                            <button className={cn.button} onClick={() => play(item)}>
-                                <PlayIcon />
-                            </button>
-                            <button className={cn.button} onClick={() => play(item, true)}>
-                                <ShuffleIcon />
-                            </button>
-                            <button className={cn.button} onClick={() => service.remove(item.code)}>
-                                <CloseIcon />
-                            </button>
+        <Sidebar>
+            {playlists.map(item => (
+                <div key={item.code} className={cn.item} style={{ backgroundImage: `url(${getMidImage(item.display).url})` }}>
+                    <div className={cn.content}>
+                        <div className={cn.text}>
+                            {item.title}
                         </div>
+                        <button className={cn.button} onClick={() => play(item)}>
+                            <PlayIcon />
+                        </button>
+                        <button className={cn.button} onClick={() => play(item, true)}>
+                            <ShuffleIcon />
+                        </button>
+                        <button className={cn.button} onClick={() => service.remove(item.code)}>
+                            <CloseIcon />
+                        </button>
                     </div>
-                ))}
-            </div>
-        </div>
+                </div>
+            ))}
+        </Sidebar>
     )
 }
 
-export default memo(Sidebar)
+export default memo(Playlists)

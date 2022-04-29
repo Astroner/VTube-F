@@ -1,6 +1,6 @@
 import React, { memo, FC, FormEventHandler, useState } from 'react';
 import { usePromiseCall } from '@dogonis/hooks';
-import { useService } from '@dogonis/react-injectable';
+import { useInjector, useService } from '@dogonis/react-injectable';
 
 import { getMediaInfo } from '../../../api/main/getMediaInfo';
 import { getPlaylist } from '../../../api/main/getPlaylist';
@@ -17,6 +17,7 @@ import { CloseIcon } from '../../../icons/Close.icon';
 import { BookmarkAddIcon } from '../../../icons/BookmarkAdd.icon';
 import { PlaylistsService } from '../../../services/playlists.service';
 import { getDynamicList } from '../../../api/main/getDynamicList';
+import { UserService } from '../../../services/user.service';
 
 export interface Video {
     code: string, 
@@ -31,10 +32,11 @@ export interface IVideoInput {
 }
 
 const VideoInput: FC<IVideoInput> = props => {
+    const playlists = useService(PlaylistsService);
+    const [{ psid }] = useInjector(UserService);
 
     const [value, setValue] = useState("");
     const [target, setTarget] = useState<null | ParsedURL>(null);
-    const playlists = useService(PlaylistsService);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
@@ -46,7 +48,10 @@ const VideoInput: FC<IVideoInput> = props => {
         if(!target?.code) return null;
 
         if(target.type === "VIDEO") return await getMediaInfo(target.code)
-        else if(target.type === "DYNAMIC_PLAYLIST") return await getDynamicList("", target.code)
+        else if(target.type === "DYNAMIC_PLAYLIST") {
+            const [list, code] = target.code.split(" | ");
+            return await getDynamicList(psid ?? "", list, code)
+        }
         return await getPlaylist(target.code);
     }, [target])
 
@@ -133,21 +138,18 @@ const VideoInput: FC<IVideoInput> = props => {
                                 <button className={cn.action} onClick={play}>
                                     <PlayIcon />
                                 </button>
-                                {
-                                    "list" in data 
-                                    ? (
-                                        <button className={cn.action} onClick={shuffle}>
-                                            <ShuffleIcon />
-                                        </button>
-                                    )
-                                    : (
+                                {"list" in data && (
+                                    <button className={cn.action} onClick={shuffle}>
+                                        <ShuffleIcon />
+                                    </button>
+                                )}
+                                {!("list" in data) && target?.type === "PLAYLIST" && (
                                         <button className={cn.action} onClick={add}>
                                             <PlaylistAddIcon />
                                         </button>
-                                    )
-                                }
+                                )}
                                 {
-                                    "list" in data && target && !playlists.has(target.code) && (
+                                    target?.type !== "DYNAMIC_PLAYLIST" && "list" in data && target && !playlists.has(target.code) && (
                                         <button className={cn.action} onClick={addToBookmark}>
                                             <BookmarkAddIcon />
                                         </button>

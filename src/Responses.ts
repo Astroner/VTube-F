@@ -25,3 +25,20 @@ export interface VideoInfo {
     title: string;
     displayImage: YTImage[];
 }
+
+export interface DynamicPlaylistRecommendation {
+    type: "DYNAMIC_PLAYLIST";
+    title: string;
+    display: YTImage[];
+    list: string;
+    code: string;
+}
+
+export interface MusicCategory {
+    title: string;
+    items: DynamicPlaylistRecommendation[];
+}
+
+export interface MusicCategories {
+    categories: MusicCategory[];
+}

@@ -9,27 +9,49 @@
 .sidebar {
     position: fixed;
     
-    height: calc(100% - 50px);
-    width: calc(100%);
+    height: 100%;
+    width: 100%;
 
     z-index: 10;
 
-    transition: left .3s ease-out, top .3s ease-out, box-shadow .3s ease-in;
+    transition: left .3s ease-out, top .3s ease-out;
 
 
     border: 1px solid black;
 
     &--opened {
         composes: sidebar;
-        left: 0;
-        top: 50px;
-        box-shadow: 0 0 5px rgba($color: #000000, $alpha: .5);
+        top: 0;
     }
 
     &--closed {
         composes: sidebar;
-        left: 100%;
         top: 100px;
-        box-shadow: 0 0 40px 10px rgba($color: #000000, $alpha: .5);
+    }
+
+    &--right {
+        composes: sidebar;
+
+        &--opened {
+            composes: sidebar--opened;
+            left: 0;
+        }
+        &--closed {
+            composes: sidebar--closed;
+            left: 100%;
+        }
+    }
+
+    &--left {
+        composes: sidebar;
+
+        &--opened {
+            composes: sidebar--opened;
+            left: 0;
+        }
+        &--closed {
+            composes: sidebar--closed;
+            left: -100%;
+        }
     }
 }
